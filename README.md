@@ -16,7 +16,7 @@ Bidirectional file transfer tool over SSH, powered by rsync and SSH ControlMaste
 
 ### From release binary
 
-Download the binary for your platform from the [releases](https://github.com/dislab/lrcp/releases) page, rename it to `lrcp`, and place it in your `$PATH`.
+Download the binary for your platform from the [releases](https://github.com/yuantianyu177/lrcp/releases) page, rename it to `lrcp`, and place it in your `$PATH`.
 
 ### From source
 
