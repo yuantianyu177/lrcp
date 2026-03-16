@@ -10,6 +10,7 @@ Bidirectional file transfer tool over SSH, powered by rsync and SSH ControlMaste
 - **Remote path completion** — tab-complete remote paths in push/pull commands
 - **Password & key auth** — supports both SSH key and password authentication (encrypted with AES-256-GCM)
 - **Configurable rsync** — customize rsync behavior via a config file
+- **Port forwarding** — SSH tunnel with `lrcp tunnel`, supports local and remote forwarding
 - **Shell completion** — bash, zsh, and fish completion support
 
 ## Installation
@@ -76,6 +77,18 @@ lrcp push <local> <host>:<remote> [-- rsync_flags...]
 lrcp pull <host>:<remote> <local> [-- rsync_flags...]
 ```
 
+### Port forwarding (tunnel)
+
+```bash
+# Forward remote server:7890 to local :9900
+lrcp tunnel server:7890 localhost:9900
+
+# Forward local :5432 to remote server:3243
+lrcp tunnel localhost:5432 server:3243
+```
+
+Use `localhost` or `127.0.0.1` to indicate the local machine. Active tunnels are shown in `lrcp list`.
+
 ### Edit / Remove a host
 
 ```bash
@@ -92,7 +105,8 @@ All configuration is stored in `~/.config/lrcp/`:
 ├── hosts          # SSH host definitions
 ├── credentials    # encrypted passwords (AES-256-GCM)
 ├── config         # rsync configuration
-└── sockets/       # SSH ControlMaster sockets
+└── sockets/       # SSH ControlMaster sockets & tunnel registry
+    └── tunnels.json  # active tunnel records
 ```
 
 ### Hosts file
