@@ -44,6 +44,27 @@ var listCmd = &cobra.Command{
 				h.Name, h.HostName, h.User, h.Port, auth, status)
 		}
 		w.Flush()
+
+		// Show active tunnels
+		ssh.CleanTunnels(paths.SocketsDir)
+		tunnels, err := ssh.LoadTunnels(paths.SocketsDir)
+		if err != nil {
+			return err
+		}
+		if len(tunnels) > 0 {
+			fmt.Println()
+			tw := tabwriter.NewWriter(os.Stdout, 0, 0, 2, ' ', 0)
+			fmt.Fprintln(tw, "TUNNEL\tDIRECTION\tFROM\tTO")
+			for _, t := range tunnels {
+				dir := "remote -> local"
+				if t.Direction == ssh.RemoteForward {
+					dir = "local -> remote"
+				}
+				fmt.Fprintf(tw, "%s\t%s\t%s\t%s\n", t.Host, dir, t.From, t.To)
+			}
+			tw.Flush()
+		}
+
 		return nil
 	},
 }
